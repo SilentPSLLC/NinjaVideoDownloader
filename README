@@ -1,0 +1,49 @@
+Ninja Video Downloader
+
+Ninja Video Downloader is a simple tool for downloading videos from TikTok and YouTube using yt-dlp. This tool automatically handles the installation of yt-dlp, creates a designated download directory, and logs all download activities.
+
+Features
+
+- Downloads videos from TikTok and YouTube.
+- Automatically installs yt-dlp if not present.
+- Logs download activities to a log file.
+- Outputs downloaded videos to a specified directory.
+
+Installation
+
+1. Clone this repository:
+   git clone https://github.com/yourusername/NinjaVideoDownloader.git
+
+2. Navigate to the directory:
+   cd NinjaVideoDownloader
+
+3. Run the PowerShell script:
+   .\NinjaVideoDownloader.ps1
+
+Usage
+
+1. Run the PowerShell script.
+2. When prompted, enter the URL of the TikTok or YouTube video you want to download.
+3. The video will be downloaded to C:\Program Files\NinjaVideoDownloader.
+
+Logging
+
+All activities are logged to C:\Program Files\NinjaVideoDownloader\NinjaVideoDownloader.log. Check this file for detailed output on the download process.
+
+Requirements
+
+- Windows operating system
+- PowerShell
+
+Troubleshooting
+
+- If you encounter issues, ensure you have the necessary permissions to write to the download directory.
+- Check the log file for error messages to diagnose problems.
+
+License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Contact
+
+For questions or issues, please open an issue on the GitHub repository or contact me at your-email@example.com.
