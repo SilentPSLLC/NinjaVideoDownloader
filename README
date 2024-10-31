@@ -1,49 +1,103 @@
-Ninja Video Downloader
+# Ninja Video Downloader
 
-Ninja Video Downloader is a simple tool for downloading videos from TikTok and YouTube using yt-dlp. This tool automatically handles the installation of yt-dlp, creates a designated download directory, and logs all download activities.
+Ninja Video Downloader is a tool for downloading and converting videos from popular video sites such as YouTube and TikTok. It leverages `yt-dlp` and `ffmpeg` for handling downloads and format conversions. 
 
-Features
+---
 
-- Downloads videos from TikTok and YouTube.
-- Automatically installs yt-dlp if not present.
-- Logs download activities to a log file.
-- Outputs downloaded videos to a specified directory.
+## Table of Contents
 
-Installation
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Setup and Installation](#setup-and-installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Troubleshooting](#troubleshooting)
+- [Credits](#credits)
 
-1. Clone this repository:
-   git clone https://github.com/yourusername/NinjaVideoDownloader.git
+---
 
-2. Navigate to the directory:
-   cd NinjaVideoDownloader
+## Project Overview
 
-3. Run the PowerShell script:
-   .\NinjaVideoDownloader.ps1
+- **Version**: 2.1.2
+- **Author**: Christopher Sparrowgrove
+- **Product Name**: Ninja Video Downloader
+- **Thank You Note**: Special thanks to `yt-dlp` and `ffmpeg` for their contributions to this tool indirectly.
 
-Usage
+---
 
-1. Run the PowerShell script.
-2. When prompted, enter the URL of the TikTok or YouTube video you want to download.
-3. The video will be downloaded to C:\Program Files\NinjaVideoDownloader.
+## Features
 
-Logging
+- Download videos from YouTube and TikTok.
+- Supports multiple quality options for YouTube (`best`, `worst`, `audio only`).
+- Customizable download directory.
+- Simple, user-friendly GUI interface.
+  
+---
 
-All activities are logged to C:\Program Files\NinjaVideoDownloader\NinjaVideoDownloader.log. Check this file for detailed output on the download process.
+## Requirements
 
-Requirements
+- Python 3.x
+- `yt-dlp`, `7-zip`, and `ffmpeg` (automatically downloaded by the program).
+- Internet connection for initial downloads and video downloads.
 
-- Windows operating system
-- PowerShell
+---
 
-Troubleshooting
+## Setup and Installation
 
-- If you encounter issues, ensure you have the necessary permissions to write to the download directory.
-- Check the log file for error messages to diagnose problems.
+1. **Clone the Repository**:
+   ```shell
+   git clone https://github.com/yourusername/NinjaVideoDownloader.git  
+   cd NinjaVideoDownloader  
+   ```
 
-License
+2. **Install Python Packages**:
+   Ensure that you have `requests` and `tkinter` available for your Python version.
+   ```shell
+   pip install requests  
+   ```
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+3. **Run the Script**:
+   Run the script with Python:
+   ```shell
+   python ninja_video_downloader.py  
+   ```
 
-Contact
+---
 
-For questions or issues, please open an issue on the GitHub repository or contact me at your-email@example.com.
+## Usage
+
+1. **Enter Video URL**: Paste the video URL from YouTube or TikTok into the provided field.
+2. **Select Download Directory**: Choose or change the directory where videos will be saved.
+3. **Choose Quality**: Select the preferred quality (YouTube videos only).
+4. **Start Download**: Click the "Start Download" button.
+
+The video will download and, if necessary, merge audio and video components.
+
+---
+
+## Configuration
+
+- Configuration settings are saved in `config.json`, located in the download folder.
+- The default download directory is the `Downloads/NinjaVideoDownloader` folder, which can be customized in the application and saved to `config.json`.
+
+---
+
+## Troubleshooting
+
+- **Failed Downloads**: Ensure `yt-dlp` and `ffmpeg` are downloaded successfully. Check internet connectivity if you encounter download issues.
+- **Errors During Extraction**: The program uses `7-zip` for extraction. Make sure it downloads correctly to the designated download folder.
+- **Updates**: Try updating `yt-dlp` to the latest version if downloads fail, as changes in video platform APIs can affect functionality.
+
+---
+
+## Credits
+
+This project uses the following open-source tools:
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) - For video downloading.
+- [ffmpeg](https://www.gyan.dev/ffmpeg) - For media processing.
+- [7-zip](https://7-zip.org/) - For extracting compressed files.
+
+---
+
+Enjoy downloading with Ninja Video Downloader!
