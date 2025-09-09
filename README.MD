@@ -62,6 +62,10 @@ Ninja Video Downloader is a tool for downloading and converting videos from popu
    ```shell
    python ninja_video_downloader.py  
    ```
+    OR
+   ```shell
+   python simple_gui.py
+   ```
 
 ---
 
