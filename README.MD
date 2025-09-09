@@ -1,4 +1,4 @@
-# Ninja Video Downloader
+# Ninja Video Downloader v1.2.0
 
 Ninja Video Downloader is a tool for downloading and converting videos from popular video sites such as YouTube and TikTok. It leverages `yt-dlp` and `ffmpeg` for handling downloads and format conversions. 
 
