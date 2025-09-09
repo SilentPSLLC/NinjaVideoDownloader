@@ -7,9 +7,10 @@ from tkinter import messagebox, filedialog, ttk
 import re
 from pathlib import Path
 import requests
+import threading
 
 # Define version, company name, and product name
-__version__ = "1.1.2"
+__version__ = "1.2.0"
 __company__ = "Christopher Sparrowgrove"
 __product_name__ = "Ninja Video Downloader"
 __thank_you_note__ = "Thanks to yt-dlp and ffmpeg."
@@ -109,23 +110,45 @@ def sanitize_filename(filename):
     return re.sub(r'[<>:"/\\|?*]', '_', filename)
 
 def is_valid_url(url):
-    return re.match(r'https?://(www\.)?(youtube\.com|youtu\.be|tiktok\.com)/.+', url)
+    # Extended to support Instagram
+    patterns = [
+        r'https?://(www\.)?(youtube\.com|youtu\.be)/.+',
+        r'https?://(www\.)?tiktok\.com/.+',
+        r'https?://(www\.)?instagram\.com/(p|reel|tv)/.+'
+    ]
+    return any(re.match(pattern, url) for pattern in patterns)
+
+def detect_platform(url):
+    if "youtube.com" in url or "youtu.be" in url:
+        return "youtube"
+    elif "tiktok.com" in url:
+        return "tiktok"
+    elif "instagram.com" in url:
+        return "instagram"
+    return "unknown"
 
 # GUI Setup
 class VideoDownloader:
     def __init__(self, master):
         self.master = master
-        master.title("Ninja Video Downloader")
-        master.geometry("500x350")
+        master.title("Ninja Video Downloader v1.2.0")
+        master.geometry("550x400")
 
         # URL Entry
-        self.url_label = tk.Label(master, text="Enter Video URL:")
+        self.url_label = tk.Label(master, text="Enter Video URL (YouTube, TikTok, Instagram):")
         self.url_label.pack(pady=10)
         self.url_entry = tk.Entry(master, width=60)
         self.url_entry.pack(pady=5)
 
+        # Platform detection display
+        self.platform_label = tk.Label(master, text="Platform: Not detected", fg="gray")
+        self.platform_label.pack(pady=2)
+        
+        # Bind URL entry to detect platform
+        self.url_entry.bind('<KeyRelease>', self.on_url_change)
+
         # Download Directory Entry
-        self.dir_label = tk.Label(master, text="Specific Download Directory:")
+        self.dir_label = tk.Label(master, text="Download Directory:")
         self.dir_label.pack(pady=10)
         self.path_entry = tk.Entry(master, width=60)
         self.path_entry.pack(pady=5)
@@ -135,20 +158,74 @@ class VideoDownloader:
         self.browse_button = tk.Button(master, text="Browse", command=self.browse)
         self.browse_button.pack(pady=5)
 
-        # Quality Options
-        self.quality_label = tk.Label(master, text="Select Quality (for YouTube only):")
-        self.quality_label.pack(pady=10)
+        # Quality Options Frame
+        self.quality_frame = tk.Frame(master)
+        self.quality_frame.pack(pady=10)
+        
+        self.quality_label = tk.Label(self.quality_frame, text="Quality Options:")
+        self.quality_label.pack()
+        
         self.quality_var = tk.StringVar(value="best")
-        self.quality_options = ttk.Combobox(master, textvariable=self.quality_var, values=["best", "worst", "audio only"], state="readonly")
+        self.quality_options = ttk.Combobox(
+            self.quality_frame, 
+            textvariable=self.quality_var, 
+            values=["best", "worst", "audio only"], 
+            state="readonly",
+            width=15
+        )
         self.quality_options.pack(pady=5)
 
+        # Additional Options Frame
+        self.options_frame = tk.Frame(master)
+        self.options_frame.pack(pady=5)
+        
+        # Metadata option
+        self.metadata_var = tk.BooleanVar(value=True)
+        self.metadata_check = tk.Checkbutton(
+            self.options_frame, 
+            text="Save metadata (description, thumbnail)", 
+            variable=self.metadata_var
+        )
+        self.metadata_check.pack(side=tk.LEFT, padx=5)
+
+        # Subtitle option
+        self.subtitle_var = tk.BooleanVar(value=False)
+        self.subtitle_check = tk.Checkbutton(
+            self.options_frame, 
+            text="Download subtitles", 
+            variable=self.subtitle_var
+        )
+        self.subtitle_check.pack(side=tk.LEFT, padx=5)
+
         # Download Button
-        self.download_button = tk.Button(master, text="Start Download", command=self.download)
-        self.download_button.pack(pady=10)
+        self.download_button = tk.Button(master, text="Start Download", command=self.start_download_thread)
+        self.download_button.pack(pady=15)
 
         # Progress Bar
         self.progress_bar = ttk.Progressbar(master, orient="horizontal", mode="indeterminate")
-        self.progress_bar.pack(pady=10, fill=tk.X)
+        self.progress_bar.pack(pady=5, fill=tk.X, padx=20)
+        
+        # Status Label
+        self.status_label = tk.Label(master, text="Ready", fg="green")
+        self.status_label.pack(pady=5)
+
+    def on_url_change(self, event):
+        url = self.url_entry.get().strip()
+        if url:
+            platform = detect_platform(url)
+            if platform != "unknown":
+                self.platform_label.config(text=f"Platform: {platform.title()}", fg="blue")
+                # Enable/disable quality options based on platform
+                if platform == "youtube":
+                    self.quality_options.config(state="readonly")
+                    self.quality_label.config(text="Quality Options (YouTube):")
+                else:
+                    self.quality_options.config(state="disabled")
+                    self.quality_label.config(text="Quality Options (Not available for this platform):")
+            else:
+                self.platform_label.config(text="Platform: Unknown/Invalid URL", fg="red")
+        else:
+            self.platform_label.config(text="Platform: Not detected", fg="gray")
 
     def browse(self):
         folder_selected = filedialog.askdirectory()
@@ -156,48 +233,91 @@ class VideoDownloader:
             self.path_entry.delete(0, tk.END)
             self.path_entry.insert(0, folder_selected)
 
+    def start_download_thread(self):
+        # Run download in separate thread to prevent GUI freezing
+        thread = threading.Thread(target=self.download, daemon=True)
+        thread.start()
+
+    def update_status(self, message, color="black"):
+        self.status_label.config(text=message, fg=color)
+        self.master.update_idletasks()
+
     def download(self):
         url = self.url_entry.get().strip()
         download_path = Path(self.path_entry.get().strip())
         
         # Validate URL
-        print("Validating URL...")
+        self.update_status("Validating URL...", "blue")
         if not is_valid_url(url):
-            messagebox.showerror("Error", "Please enter a valid YouTube or TikTok URL.")
+            messagebox.showerror("Error", "Please enter a valid YouTube, TikTok, or Instagram URL.")
+            self.update_status("Invalid URL", "red")
             return
 
+        # Disable download button during download
+        self.download_button.config(state="disabled")
+        
         # Start Download Process
-        print("Starting download...")
+        self.update_status("Starting download...", "blue")
         self.progress_bar.start()
 
+        platform = detect_platform(url)
         output_template = download_path / "%(title)s.%(ext)s"
         
-        # Determine format option - Only set format for YouTube
-        if "youtube" in url or "youtu.be" in url:
+        # Build yt-dlp arguments based on platform
+        yt_dlp_args = [str(yt_dlp_path), url, "-o", str(output_template)]
+        
+        if platform == "youtube":
+            # YouTube-specific options
             format_option = {
                 "best": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best",
-                "worst": "worstvideo[ext=mp4]+worstaudio[ext=m4a]/worst",
+                "worst": "worstvideo[ext=mp4]+worstaudio[ext=m4a]/worst", 
                 "audio only": "bestaudio/best"
             }.get(self.quality_var.get(), "best")
-            yt_dlp_args = [str(yt_dlp_path), url, "-f", format_option, "-o", str(output_template), "--merge-output-format", "mp4", "--verbose"]
-        else:
-            # For TikTok, don't specify a format; let yt-dlp choose the best
-            yt_dlp_args = [str(yt_dlp_path), url, "-o", str(output_template), "--merge-output-format", "mp4", "--verbose"]
+            yt_dlp_args.extend(["-f", format_option, "--merge-output-format", "mp4"])
+        
+        elif platform == "instagram":
+            # Instagram-specific options
+            yt_dlp_args.extend([
+                "--no-playlist",  # Don't download entire albums/stories
+                "--write-info-json" if self.metadata_var.get() else "--no-write-info-json"
+            ])
+        
+        elif platform == "tiktok":
+            # TikTok-specific options
+            yt_dlp_args.extend(["--merge-output-format", "mp4"])
+
+        # Add common options
+        if self.metadata_var.get():
+            yt_dlp_args.extend(["--write-description", "--write-thumbnail"])
+        
+        if self.subtitle_var.get():
+            yt_dlp_args.extend(["--write-subs", "--write-auto-subs"])
+        
+        yt_dlp_args.append("--verbose")
 
         # Add ffmpeg/bin directory to PATH for yt-dlp merging
         ffmpeg_bin_path = ffmpeg_extracted_folder / "bin"
-        os.environ["PATH"] += os.pathsep + str(ffmpeg_bin_path)
+        env = os.environ.copy()
+        env["PATH"] += os.pathsep + str(ffmpeg_bin_path)
 
         try:
+            # Create download directory if it doesn't exist
+            download_path.mkdir(parents=True, exist_ok=True)
+            
             log_file_name = sanitize_filename(url.split("/")[-1]) + ".log"
             log_file_path = download_path / log_file_name
-            with log_file_path.open('w') as log_file:
-                print("Running yt-dlp command...")
+            
+            self.update_status("Downloading...", "blue")
+            
+            with log_file_path.open('w', encoding='utf-8') as log_file:
                 process = subprocess.Popen(
                     yt_dlp_args,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
-                    text=True
+                    text=True,
+                    env=env,
+                    encoding='utf-8',
+                    errors='replace'
                 )
 
                 while True:
@@ -207,33 +327,48 @@ class VideoDownloader:
                     if output:
                         print(output.strip())
                         log_file.write(output)
+                        # Update status with download progress if available
+                        if "%" in output and "ETA" in output:
+                            progress_match = re.search(r'(\d+\.?\d*)%', output)
+                            if progress_match:
+                                self.update_status(f"Downloading... {progress_match.group(1)}%", "blue")
 
                 returncode = process.wait()
                 self.progress_bar.stop()
-                print(f"yt-dlp exited with code {returncode}")
 
                 if returncode == 0:
-                    print("Download complete.")
+                    self.update_status("Download complete!", "green")
                     messagebox.showinfo("Success", "Download complete!")
 
-                    # Locate the final merged mp4 file by timestamp to ensure the current time is applied
-                    final_file = max(download_path.glob("*.mp4"), key=os.path.getctime)
-                    print(f"Final file to update timestamp: {final_file}")
-                    current_time = time.time()
-                    os.utime(final_file, (current_time, current_time))
+                    # Update timestamp of downloaded files
+                    try:
+                        video_files = list(download_path.glob("*.mp4")) + list(download_path.glob("*.webm")) + list(download_path.glob("*.mkv"))
+                        if video_files:
+                            for file_path in video_files:
+                                current_time = time.time()
+                                os.utime(file_path, (current_time, current_time))
+                    except Exception as e:
+                        print(f"Failed to update file timestamps: {e}")
 
                 else:
-                    print(f"Download failed with exit code {returncode}.")
-                    messagebox.showerror("Error", f"Download failed with exit code {returncode}. Please try updating yt-dlp.")
+                    self.update_status("Download failed", "red")
+                    messagebox.showerror("Error", f"Download failed with exit code {returncode}. Check the log file for details.")
 
             # Save the current configuration
             config['DownloadPath'] = str(download_path)
-            config_file_path.write_text(json.dumps(config))
+            config_file_path.write_text(json.dumps(config, indent=2))
 
         except Exception as e:
             self.progress_bar.stop()
+            self.update_status("Error occurred", "red")
             print(f"An error occurred during download process: {e}")
             messagebox.showerror("Error", f"An error occurred: {e}")
+        
+        finally:
+            # Re-enable download button
+            self.download_button.config(state="normal")
+            if self.progress_bar.cget("mode") == "indeterminate":
+                self.progress_bar.stop()
 
 # Run the application
 if __name__ == "__main__":
