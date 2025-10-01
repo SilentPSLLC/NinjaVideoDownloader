@@ -1,0 +1,41 @@
+Ninja Video Downloader
+Copyright (C) 2024 Christopher Sparrowgrove
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+================================================================================
+
+NO SUPPORT - NO LIABILITY NOTICE
+
+THIS SOFTWARE IS PROVIDED "AS-IS" WITHOUT ANY SUPPORT.
+
+The author, Christopher Sparrowgrove, explicitly provides this software without:
+- Technical support of any kind
+- Warranties of any kind, express or implied  
+- Liability for damages, data loss, or any other consequences
+
+By using this software, you acknowledge and agree that:
+1. You use this software entirely at your own risk
+2. The author has no obligation to provide updates, fixes, or support
+3. The author is not liable for any damages whatsoever arising from use of this software
+
+For questions about the GPL-3.0 license terms, the complete license text is 
+available at: https://www.gnu.org/licenses/gpl-3.0.txt
+
+================================================================================
+
+Project Repository: https://github.com/SilentPSLLC/NinjaVideoDownloader
+
+Third-party components (yt-dlp, ffmpeg, 7-zip) are subject to their own 
+licenses. See the licenses/ directory for full license texts.
