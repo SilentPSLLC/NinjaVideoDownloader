@@ -1,5 +1,16 @@
-Ninja Video Downloader
-Copyright (C) 2024 Christopher Sparrowgrove
+TubeArc Media Archiver - License Information
+============================================
+
+TubeArc itself is released under the GNU General Public License v3.0 (GPL-3.0).
+However, TubeArc integrates and depends on several third-party tools, each with
+their own licenses. This document provides the complete licensing information.
+
+============================================
+TUBEARC LICENSE (Main Application)
+============================================
+
+TubeArc Media Archiver
+Copyright (C) 2024-2025 SilentPSLLC
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -14,28 +25,149 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-================================================================================
+============================================
+THIRD-PARTY COMPONENTS
+============================================
 
-NO SUPPORT - NO LIABILITY NOTICE
+TubeArc automatically downloads and uses the following third-party tools.
+Each tool has its own license:
 
-THIS SOFTWARE IS PROVIDED "AS-IS" WITHOUT ANY SUPPORT.
+1. yt-dlp (Unlicense - Public Domain)
+2. FFmpeg (GNU LGPL v2.1 or later / GNU GPL v2 or later)
+3. 7-Zip (GNU LGPL v2.1 with unRAR restriction / BSD licenses)
 
-The author, Christopher Sparrowgrove, explicitly provides this software without:
-- Technical support of any kind
-- Warranties of any kind, express or implied  
-- Liability for damages, data loss, or any other consequences
+---
 
-By using this software, you acknowledge and agree that:
-1. You use this software entirely at your own risk
-2. The author has no obligation to provide updates, fixes, or support
-3. The author is not liable for any damages whatsoever arising from use of this software
+============================================
+YT-DLP LICENSE (Video Download Tool)
+============================================
 
-For questions about the GPL-3.0 license terms, the complete license text is 
-available at: https://www.gnu.org/licenses/gpl-3.0.txt
+This is free and unencumbered software released into the public domain.
 
-================================================================================
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
 
-Project Repository: https://github.com/SilentPSLLC/NinjaVideoDownloader
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
 
-Third-party components (yt-dlp, ffmpeg, 7-zip) are subject to their own 
-licenses. See the licenses/ directory for full license texts.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <https://unlicense.org>
+
+---
+
+============================================
+FFMPEG LICENSE (Media Processing Tool)
+============================================
+
+FFmpeg is licensed under the GNU Lesser General Public License (LGPL)
+version 2.1 or later. Some optional components are licensed under the
+GNU General Public License (GPL) version 2 or later.
+
+The complete FFmpeg license information can be found at:
+https://ffmpeg.org/legal.html
+
+FFmpeg License Summary:
+- Most of FFmpeg is under LGPL v2.1+
+- Some parts are under GPL v2+
+- When built with GPL components, the entire build is GPL
+
+Since TubeArc uses the pre-built FFmpeg binaries, the licensing follows
+the FFmpeg project's terms. Users should refer to FFmpeg's license for
+complete details.
+
+---
+
+============================================
+7-ZIP LICENSE (Archive Extraction Tool)
+============================================
+
+7-Zip Copyright (C) 1999-2025 Igor Pavlov.
+
+The licenses for files are:
+
+  - CPP/7zip/Compress/Rar* files: GNU LGPL with unRAR license restriction
+  - CPP/7zip/Compress/LzfseDecoder.cpp: BSD 3-clause License
+  - C/ZstdDec.c: BSD 3-clause License
+  - C/Xxh64.c: BSD 2-clause License
+  - Some files are "public domain" files
+  - GNU LGPL for all other files
+
+GNU LGPL Information
+--------------------
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, you can get a copy from
+http://www.gnu.org/
+
+unRAR License Restriction
+-------------------------
+
+The decompression engine for RAR archives was developed using source
+code of unRAR program. All copyrights to original unRAR code are owned
+by Alexander Roshal.
+
+The unRAR sources cannot be used to re-create the RAR compression
+algorithm, which is proprietary. Distribution of modified unRAR sources
+in separate form or as a part of other software is permitted, provided
+that it is clearly stated in the documentation and source comments that
+the code may not be used to develop a RAR (WinRAR) compatible archiver.
+
+---
+
+============================================
+LICENSE COMPATIBILITY NOTES
+============================================
+
+TubeArc is licensed under GPL-3.0, which is compatible with:
+- LGPL v2.1+ (7-Zip, FFmpeg core)
+- Unlicense/Public Domain (yt-dlp)
+- BSD licenses (components of 7-Zip)
+
+The GPL-3.0 license for TubeArc is the most restrictive license in this
+combination. When distributing TubeArc with these components, the GPL-3.0
+terms apply to the combined work.
+
+Users are free to use these tools independently under their respective
+licenses.
+
+============================================
+COMPLETE LICENSE TEXTS
+============================================
+
+The complete text of the GNU General Public License v3.0 can be found at:
+https://www.gnu.org/licenses/gpl-3.0.txt
+
+The complete text of the GNU Lesser General Public License v2.1 can be found at:
+https://www.gnu.org/licenses/lgpl-2.1.txt
+
+---
+
+For questions about TubeArc licensing, please contact: SilentPSLLC
+For questions about component licenses, please refer to the respective projects:
+- yt-dlp: https://github.com/yt-dlp/yt-dlp
+- FFmpeg: https://ffmpeg.org
+- 7-Zip: https://www.7-zip.org
