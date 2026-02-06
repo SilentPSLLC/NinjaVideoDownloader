@@ -1,5 +1,5 @@
 """
-TubeArc Media Archiver v3.0.1
+TubeArc Media Archiver v3.1.0
 Codename: Kitsune 🦊
 
 A self-contained video archiver that automatically downloads all required tools
@@ -14,7 +14,7 @@ Evolution:
 Features:
 - Automatic tool downloads (yt-dlp, 7-Zip, FFmpeg)
 - Self-updating capability
-- Multi-platform support (YouTube, TikTok, Instagram)
+- Multi-platform support 
 - Download video, audio, or both separately
 - Merged video+audio option (default)
 - Optional metadata and subtitle downloads
@@ -47,12 +47,12 @@ except ImportError:
 # Kitsune keeps itself sharp and up-to-date
 # ============================================================================
 
-TUBEARC_VERSION = "3.0.1"
+TUBEARC_VERSION = "3.1.0"
 TUBEARC_CODENAME = "Kitsune"
 
 # GitHub repository for updates
 GITHUB_REPO_OWNER = "SilentPSLLC"
-GITHUB_REPO_NAME = "NinjaVideoDownloader"
+GITHUB_REPO_NAME = "TubeArc"
 GITHUB_RAW_URL = f"https://raw.githubusercontent.com/{GITHUB_REPO_OWNER}/{GITHUB_REPO_NAME}/main"
 GITHUB_API_URL = f"https://api.github.com/repos/{GITHUB_REPO_OWNER}/{GITHUB_REPO_NAME}/releases/latest"
 
@@ -134,9 +134,9 @@ class TubeArcArchiver:
     def _configure_window(self):
         """Configure the main application window properties."""
         self.root.title(f"TubeArc Media Archiver v{TUBEARC_VERSION} ({TUBEARC_CODENAME})")
-        self.root.geometry("600x380")
+        self.root.geometry("600x420")
         self.root.resizable(True, False)
-        self.root.minsize(500, 380)
+        self.root.minsize(500, 420)
     
     def _ensure_directories(self):
         """Create necessary application directories if they don't exist."""
@@ -175,6 +175,7 @@ class TubeArcArchiver:
     # Kitsune's beautiful interface
     # ------------------------------------------------------------------------
     
+    # Build User Interface (UI)
     def _build_ui(self):
         """Construct the complete user interface."""
         # Create menu bar
@@ -191,6 +192,7 @@ class TubeArcArchiver:
         self._create_progress_section(main_frame)
         self._create_footer(main_frame)
     
+    # Build complete Menu Bar 
     def _create_menu_bar(self):
         """Create the application menu bar."""
         menubar = tk.Menu(self.root)
@@ -220,21 +222,58 @@ class TubeArcArchiver:
         self.root.after(0, lambda: self._update_status("Update check complete", "green"))
         self.root.after(2000, lambda: self._update_status("Ready", "green"))
     
+    # About Product Dialog Box
     def _show_about(self):
-        """Show about dialog."""
-        messagebox.showinfo(
-            f"About TubeArc",
-            f"TubeArc Media Archiver\n"
-            f"Version: {TUBEARC_VERSION}\n"
-            f"Codename: {TUBEARC_CODENAME} 🦊\n\n"
-            f"A clever video archiver for YouTube, TikTok, and Instagram.\n\n"
-            f"Powered by:\n"
-            f"• yt-dlp\n"
-            f"• FFmpeg\n"
-            f"• 7-Zip\n\n"
-            f"Like the mythical Kitsune fox, this archiver is\n"
-            f"clever, adaptable, and always learning."
-        )
+        """Show about dialog with custom formatting."""
+        # Create custom dialog window
+        about_window = tk.Toplevel(self.root)
+        about_window.title("About TubeArc")
+        about_window.geometry("500x450")
+        about_window.resizable(False, False)
+        
+        # Center the window
+        about_window.update_idletasks()
+        x = (about_window.winfo_screenwidth() // 2) - (about_window.winfo_width() // 2)
+        y = (about_window.winfo_screenheight() // 2) - (about_window.winfo_height() // 2)
+        about_window.geometry(f"+{x}+{y}")
+        
+        # Main frame with padding
+        frame = tk.Frame(about_window, padx=30, pady=20)
+        frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Title
+        tk.Label(frame, text="TubeArc Media Archiver", 
+                font=("Arial", 15, "bold"), fg="#FF6B35").pack(pady=(0, 0))
+        
+        # Version info
+        tk.Label(frame, text=f"Version: {TUBEARC_VERSION}  ~  Codename: {TUBEARC_CODENAME}\n Author: {GITHUB_REPO_OWNER}", 
+                font=("Arial", 10)).pack(pady=(0, 0))
+        
+        # Description
+        tk.Label(frame, 
+                text="Like the mythical Kitsune fox, this video archiver for\n"
+                     "most platforms is clever, adaptable, and always improving.",
+                font=("Arial", 10), justify=tk.CENTER).pack(pady=(0, 10))
+        
+        # Credits section
+        tk.Label(frame, text="Credits:", 
+                font=("Arial", 10, "bold")).pack()
+        
+        credits_text = "yt-dlp\n FFmpeg\n 7-Zip\n ClaudeAI"
+        tk.Label(frame, text=credits_text, 
+                font=("Arial", 9), justify=tk.CENTER).pack(pady=(0, 30))
+        
+        # Quote in italic (custom font)
+        quote_text = ("❝The belief in the Mandela Effect doesn't reveal a broken\n"
+                     "universe; it reveals how repetition shapes memory and how\n"
+                     "confidence in one's mind becomes exploitable❞")
+        tk.Label(frame, text=quote_text, 
+                font=("Arial", 9, "italic"), 
+                fg="gray", justify=tk.CENTER, wraplength=420).pack(pady=(0, 15))
+        
+        # Close button
+        tk.Button(frame, text="Close", command=about_window.destroy,
+                 font=("Arial", 10), width=10).pack()
     
     def _create_header(self, parent):
         """Create the application title header."""
@@ -248,7 +287,7 @@ class TubeArcArchiver:
         url_frame = tk.Frame(parent)
         url_frame.pack(fill=tk.X, pady=(0, 10))
         
-        tk.Label(url_frame, text="Video URL (YouTube, TikTok, Instagram):", 
+        tk.Label(url_frame, text="Paste or Type Video URL Below:", 
                 font=("Arial", 10)).pack(anchor=tk.W)
         
         self.url_entry = tk.Entry(url_frame, font=("Arial", 10))
@@ -405,8 +444,8 @@ class TubeArcArchiver:
         return "unknown"
     
     # ------------------------------------------------------------------------
-    # TOOL MANAGEMENT
-    # Kitsune gathers its tools
+    # TOOL MANAGEMENT & AUTO-UPDATE
+    # Kitsune gathers and updates its tools
     # ------------------------------------------------------------------------
     
     def _initialize_tools(self):
@@ -523,36 +562,131 @@ class TubeArcArchiver:
             self._download_tubearc_update(release_info)
     
     def _download_tubearc_update(self, release_info):
-        """Download the latest TubeArc script from GitHub."""
+        """Download the latest TubeArc files from GitHub."""
         try:
             self._update_status("Downloading TubeArc update...", "blue")
             
-            # Get the download URL for tubearc.py
-            script_url = f"{GITHUB_RAW_URL}/tubearc.py"
+            # Get list of files to download from the release
+            files_to_download = [
+                "tubearc.py",
+                "updater.py",
+                "README.md",
+                "README_TUBEARC.md"
+            ]
             
-            response = requests.get(script_url, timeout=30)
-            response.raise_for_status()
+            downloaded_files = []
             
-            # Save as tubearc_new.py
-            new_script = SCRIPT_DIR / "tubearc_new.py"
-            new_script.write_text(response.text, encoding='utf-8')
+            # Download each file
+            for filename in files_to_download:
+                try:
+                    file_url = f"{GITHUB_RAW_URL}/{filename}"
+                    print(f"Downloading {filename} from: {file_url}")
+                    
+                    response = requests.get(file_url, timeout=30)
+                    response.raise_for_status()
+                    
+                    # Save with _new suffix (except updater.py which we need now)
+                    if filename == "updater.py":
+                        target_path = SCRIPT_DIR / filename
+                    else:
+                        target_path = SCRIPT_DIR / f"{Path(filename).stem}_new{Path(filename).suffix}"
+                    
+                    target_path.write_text(response.text, encoding='utf-8')
+                    downloaded_files.append(target_path)
+                    print(f"✓ Downloaded to: {target_path}")
+                    
+                except requests.HTTPError as e:
+                    if e.response.status_code == 404:
+                        print(f"  Skipping {filename} (not found in repo)")
+                    else:
+                        print(f"  Warning: Failed to download {filename}: {e}")
+                except Exception as e:
+                    print(f"  Warning: Failed to download {filename}: {e}")
             
-            messagebox.showinfo(
-                "Update Downloaded! 🦊",
-                "TubeArc has been updated!\n\n"
-                "The new version is saved as 'tubearc_new.py'\n\n"
+            if not downloaded_files:
+                raise Exception("No files were downloaded successfully!")
+            
+            # Prompt to run updater
+            response = messagebox.askyesno(
+                "Update Ready! 🦊",
+                f"TubeArc update has been downloaded!\n"
+                f"({len(downloaded_files)} files ready)\n\n"
                 "To complete the update:\n"
-                "1. Close TubeArc\n"
-                "2. Delete or rename the old 'tubearc.py'\n"
-                "3. Rename 'tubearc_new.py' to 'tubearc.py'\n"
-                "4. Restart TubeArc\n\n"
-                "Or simply replace tubearc.py with tubearc_new.py"
+                "1. TubeArc will now close\n"
+                "2. The updater will replace the old files\n"
+                "3. TubeArc will restart automatically\n\n"
+                "Continue with update?",
+                icon='info'
             )
+            
+            if response:
+                self._launch_updater()
+            else:
+                # User declined - clean up downloaded files
+                print("User declined update. Cleaning up downloaded files...")
+                self._cleanup_update_files(downloaded_files)
+                messagebox.showinfo(
+                    "Update Cancelled",
+                    "Update has been cancelled.\n"
+                    "Downloaded files have been removed."
+                )
             
         except Exception as e:
             messagebox.showerror(
                 "Update Failed",
                 f"Failed to download update:\n{e}"
+            )
+    
+    def _cleanup_update_files(self, file_list):
+        """Remove downloaded update files."""
+        for filepath in file_list:
+            try:
+                if filepath.exists():
+                    filepath.unlink()
+                    print(f"  Removed: {filepath}")
+            except Exception as e:
+                print(f"  Failed to remove {filepath}: {e}")
+    
+    def _launch_updater(self):
+        """Launch the updater script and close TubeArc."""
+        try:
+            updater_path = SCRIPT_DIR / "updater.py"
+            
+            if not updater_path.exists():
+                messagebox.showerror(
+                    "Updater Not Found",
+                    "updater.py not found!\n\n"
+                    "Please update manually:\n"
+                    "1. Close TubeArc\n"
+                    "2. Rename tubearc_new.py to tubearc.py\n"
+                    "3. Restart TubeArc"
+                )
+                return
+            
+            print("Launching updater...")
+            
+            # Launch the updater in a new process
+            import os
+            if os.name == 'nt':  # Windows
+                subprocess.Popen(
+                    [sys.executable, str(updater_path)],
+                    creationflags=subprocess.CREATE_NEW_CONSOLE
+                )
+            else:  # Linux/Mac
+                subprocess.Popen([sys.executable, str(updater_path)])
+            
+            print("Updater launched. Closing TubeArc...")
+            
+            # Close TubeArc - this terminates the current process
+            self.root.quit()
+            self.root.destroy()
+            sys.exit(0)
+            
+        except Exception as e:
+            messagebox.showerror(
+                "Launch Failed",
+                f"Failed to launch updater:\n{e}\n\n"
+                "Please run updater.py manually."
             )
     
     def _check_tool_updates(self):
