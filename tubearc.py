@@ -1,5 +1,5 @@
 """
-TubeArc Media Archiver v3.0.0
+TubeArc Media Archiver v3.0.1
 Codename: Kitsune 🦊
 
 A self-contained video archiver that automatically downloads all required tools
@@ -47,7 +47,7 @@ except ImportError:
 # Kitsune keeps itself sharp and up-to-date
 # ============================================================================
 
-TUBEARC_VERSION = "3.0.0"
+TUBEARC_VERSION = "3.0.1"
 TUBEARC_CODENAME = "Kitsune"
 
 # GitHub repository for updates
