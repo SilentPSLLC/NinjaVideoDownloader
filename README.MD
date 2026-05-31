@@ -29,9 +29,9 @@ TubeArc is a self-contained video archiver that automatically downloads all requ
 
 - **Version**: 3.1.0
 - **Codename**: Kitsune 🦊
-- **Author**: SilentPSLLC
+- **Author**: SilencePSLLC
 - **Product Name**: TubeArc Media Archiver
-- **Repository**: https://github.com/SilentPSLLC/TubeArc
+- **Repository**: https://github.com/SilencePSLLC/TubeArc
 - **Previous Name**: Ninja Video Downloader (legacy)
 
 ---
@@ -85,7 +85,7 @@ TubeArc is a self-contained video archiver that automatically downloads all requ
 
 2. **Download TubeArc**:
    ```shell
-   Download: https://github.com/SilentPSLLC/TubeArc/archive/refs/heads/main.zip
+   Download: https://github.com/SilencePSLLC/TubeArc/archive/refs/heads/main.zip
    ```
    
 3. **Extract and Install Dependencies**:
@@ -128,7 +128,7 @@ If you have the `launch_tubearc.bat` file:
 
 2. **Clone the Repository**:
    ```bash
-   git clone https://github.com/SilentPSLLC/TubeArc.git
+   git clone https://github.com/SilencePSLLC/TubeArc.git
    cd TubeArc
    ```
 
@@ -420,7 +420,7 @@ This is a free, open-source project maintained on a volunteer basis:
 
 ### Community Support
 
-- Check [Issues](https://github.com/SilentPSLLC/TubeArc/issues) for similar problems
+- Check [Issues](https://github.com/SilencePSLLC/TubeArc/issues) for similar problems
 - Search documentation thoroughly
 - Try troubleshooting steps first
 
